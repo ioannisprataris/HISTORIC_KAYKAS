@@ -131,8 +131,8 @@ and hea.ETL_Batch_ID = -2999
 		m162.[Plant_SK] [162_Plant_SK], 
 		m162.[Vendor_SK] [162_Vendor_SK],
 
-		inv.[Purchase_Invoice_SK] [inv_Purchase_Invoice_SK], -- BELNR FK
-		inv.[Purchase_Invoice_Item_ID] [inv_Purchase_Invoice_Item_ID], -- BUZEI
+		isnull(inv.[Purchase_Invoice_SK],-1) [inv_Purchase_Invoice_SK], -- BELNR FK
+		isnull(inv.[Purchase_Invoice_Item_ID],-1) [inv_Purchase_Invoice_Item_ID], -- BUZEI
 		inv.[Fiscal_Year] [inv_Fiscal_Year], -- GJAHR
 		inv.[Purchasing_Document_SK] [inv_Purchasing_Document_SK], -- EBELN FK
 		inv.[Purchasing_Document_Item_ID] [inv_Purchasing_Document_Item_ID], -- EBELP
