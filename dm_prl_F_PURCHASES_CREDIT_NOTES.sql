@@ -39,7 +39,7 @@ Select	accd.[Company_SK],
 		
 	 into #acc_21
 from [dbo].[ACCOUNTING_DOC_DETAIL] accd
-left join [dbo].[ACCOUNTING_DOC_HEADER] acch   --change from inner to left
+inner join [dbo].[ACCOUNTING_DOC_HEADER] acch  
 on accd.Accounting_Document_SK=acch.Accounting_Document_SK
 and accd.Company_SK=acch.Company_SK
 and accd.Fiscal_Year=acch.Fiscal_Year
