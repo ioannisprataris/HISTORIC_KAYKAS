@@ -15,8 +15,8 @@ WHEN MATCHED THEN
             ,[Movement_Type]                                = SRC.[Movement_Type]
             ,[Document_Type_ID]                             = SRC.[Document_Type_ID]
             ,[Return_Status]                                = SRC.[Return_Status]
-            ,[Purchase_Invoice_SK]                          = isnull(src.[Purchase_Invoice_SK],-1) 
-            ,[Purchase_Invoice_Item_ID]                     = isnull(src.[Purchase_Invoice_Item_ID],-1)
+            ,[Purchase_Invoice_SK]                          = src.[Purchase_Invoice_SK] 
+            ,[Purchase_Invoice_Item_ID]                     = src.[Purchase_Invoice_Item_ID]
             ,[User_Name]                                    = SRC.[User_Name]
             ,[Material_Document_SK]                         = SRC.[Material_Document_SK]
             ,[Material_Document_Item]                       = SRC.[Material_Document_Item]
