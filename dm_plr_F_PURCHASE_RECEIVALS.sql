@@ -20,8 +20,8 @@ Where ph.[Purchasing_Document_Type_ID]<>'ZNE' -- BSART
 and ph.[vendor_sk]<>0 -- LIFNR
 and pd.[Purchasing_Document_Deletion_IND]<>'L' -- LOEKZ
 and pd.[Returns_Item_IND]<>'X' -- RETPO
-and ph.ETL_Batch_ID = -2999 
-and pd.ETL_Batch_ID = -2999 
+and ph.ETL_Batch_ID = -9999 
+and pd.ETL_Batch_ID = -9999 
 group by ph.[Purchasing_Document_SK] -- EBELN
 		,pd.[Purchasing_Document_Item_ID] -- EBELP
 		,pd.[Material_SK] -- MATNR
@@ -50,7 +50,7 @@ SELECT
  FROM [dbo].[PURCHASE_HISTORY]
  where [Purchase_Order_History_Category_ID] = 'E' 
  And [Inventory_Management_Movement_Type_ID] = '101'
- and ETL_Batch_ID = -2999
+ and ETL_Batch_ID = -9999
 
 
 
@@ -100,15 +100,15 @@ from #MinDates
 
 
 select *,		
-		case when sum(case when [OrderLineDeliveryStatus]='Full Delivery' then 1 else 0 end) over (partition by [Purchasing_Document_SK])
+	case when sum(case when [OrderLineDeliveryStatus]='Full Delivery' then 1 else 0 end) over (partition by [Purchasing_Document_SK])
 					=
 				 count([Purchasing_Document_SK]) over (partition by [Purchasing_Document_SK])
-			 then N'Πράσινη'
+			 then N'Ξ ΟΞ¬ΟƒΞΉΞ½Ξ·'
 			 when sum(case when [OrderLineDeliveryStatus]='Undelivered' then 1 else 0 end) over (partition by [Purchasing_Document_SK])
 			 		=
 				 count([Purchasing_Document_SK]) over (partition by [Purchasing_Document_SK])
-			 then N'Κόκκινη'
-			 else N'Κίτρινη'
+			 then N'ΞΟΞΊΞΊΞΉΞ½Ξ·'
+			 else N'ΞΞ―Ο„ΟΞΉΞ½Ξ·'
 		end OrderCharacterization -- Prosuetoyme xarakthrismo katastashs entolhs agoras analoga tis paradoseis kaue grammhs ayths
 		into #src
 from #DaysDelayed
@@ -145,7 +145,6 @@ SELECT
 	 src.[OrderCharacterization],
 	 src.[DeliveryDt],
 	 src.[CPUDt],
-	 '2023-12-31'				 AS [ETL_Reference_DT],				
-	 -2999					 AS [ETL_Batch_ID]
+	 '2024-04-28'				 AS [ETL_Reference_DT],				
+	 -9999					 AS [ETL_Batch_ID]
 FROM #src src;
-
