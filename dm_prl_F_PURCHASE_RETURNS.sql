@@ -1,9 +1,3 @@
-﻿
-TRUNCATE TABLE [dm_prl].[F_PURCHASE_RETURNS];
-
-
-
-
 
 Select 
 	det.[Purchase_Order_SK], -- EBELN FK purchase
@@ -25,7 +19,7 @@ from [dbo].[PRODUCT_POSTINGS_DETAIL] det
 inner join [dbo].[PRODUCT_POSTINGS_HEADER] hea
 on hea.[Material_Document_SK]=det.[Material_Document_SK]
 where [Inventory_Management_Movement_Type] = '161'
-and det.ETL_Batch_ID = -2999 
+and det.ETL_Batch_ID = -9999 
 
 
 
@@ -51,7 +45,7 @@ Select
 	into #mseg_162
 from [dbo].[PRODUCT_POSTINGS_DETAIL]
 where [Inventory_Management_Movement_Type] = '162'
-and ETL_Batch_ID = -2999   
+and ETL_Batch_ID = -9999   
 
 
 
@@ -90,8 +84,8 @@ SELECT
  FROM [dbo].[PURCHASE_INVOICE_DETAIL] det
  inner join [dbo].[PURCHASE_INVOICE_HEADER] Hea
  on hea.[Purchase_Invoice_SK]=det.[Purchase_Invoice_SK]
- and det.ETL_Batch_ID = -2999 
-and hea.ETL_Batch_ID = -2999  
+ and det.ETL_Batch_ID = -9999 
+and hea.ETL_Batch_ID = -9999  
 
 
 
@@ -217,6 +211,6 @@ select	distinct
 		stage.[161_Quantity], -- Posothta epistrofvn
 		stage.[161_Local_Currency_Amount], -- Ajia epistrofvn
 		count(*) over (partition by [161_Material_Document_SK], [161_Material_Document_Item]) Count_CreditNotes,
-		'2023-12-31' AS [ETL_Reference_DT],		  				
-	 -2999			 AS [ETL_Batch_ID]                  
+		'2024-04-28' AS [ETL_Reference_DT],		  				
+	 -9999			 AS [ETL_Batch_ID]                  
 from #stage stage
