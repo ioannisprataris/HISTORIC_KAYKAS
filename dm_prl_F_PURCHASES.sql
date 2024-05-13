@@ -1,10 +1,9 @@
 
-TRUNCATE TABLE [dm_prl].[F_PURCHASES];
+TRUNCATE TABLE [dm_prl].[F_PURCHASES_hist];
 
 DROP TABLE IF EXISTS [temp].[F_PURCHASES_DET_LOG];
 
 Create table [temp].[F_PURCHASES_DET_LOG] ([Purchasing_Document_SK] int not null primary key)
-
 
 
 Insert into [temp].[F_PURCHASES_DET_LOG] ([Purchasing_Document_SK])
@@ -62,7 +61,7 @@ SELECT
  where	(phist.[Purchase_Order_History_Transaction_Event_Type_ID]='2' 
  or	phist.[Purchase_Order_History_Transaction_Event_Type_ID]='3')
  and [Material_Document_ID] not like '54%' 
- and phist.ETL_Batch_ID = -2999 
+ and phist.ETL_Batch_ID = -3999 
 
 
 
@@ -91,7 +90,7 @@ on delta.ReferenceKey=acch.[Reference_Key]
 Where accd.Account_Type='K'
 and fin.Finance_ID >= '0020000000' 
 and fin.Finance_ID <= '0020999999'
- and accd.ETL_Batch_ID = -2999 
+ and accd.ETL_Batch_ID = -3999 
 
 
 
@@ -130,7 +129,7 @@ on acc.Reference_Key=pur.ReferenceKey
 
 
 
-INSERT INTO [dm_prl].[F_PURCHASES]
+INSERT INTO [dm_prl].[F_PURCHASES_hist]
 (		 
 		 [Purchasing_Document_SK], 
 		 [Purchasing_Document_Item_ID], 
@@ -178,7 +177,6 @@ SELECT
 	 src.[EntryDatekey],
 	 src.[Entry_TM],
 	 src.[Inventory_Management_Movement_Type_ID],
-	 '2023-12-31'				 AS [ETL_Reference_DT],						
-	 -2999					 AS [ETL_Batch_ID]
+	 '2022-12-31'				 AS [ETL_Reference_DT],						
+	 -3999					 AS [ETL_Batch_ID]
 FROM #src src;
-
