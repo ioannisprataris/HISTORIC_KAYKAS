@@ -7,13 +7,13 @@ Create table [temp].[F_PURCHASES_DET_LOG] ([Purchasing_Document_SK] int not null
 
 Insert into [temp].[F_PURCHASES_DET_LOG] ([Purchasing_Document_SK])
 
-Select [Purchasing_Document_SK] from [dbo].[PURCHASE_HEADER] where ETL_Batch_ID = -9999 
+Select [Purchasing_Document_SK] from [dbo].[PURCHASE_HEADER] where ETL_Batch_ID = -3999 
 union
-Select [Purchasing_Document_SK] from [dbo].[PURCHASE_DETAIL] where ETL_Batch_ID = -9999 
+Select [Purchasing_Document_SK] from [dbo].[PURCHASE_DETAIL] where ETL_Batch_ID = -3999 
 
 
 
-INSERT INTO [dm_prl].[F_PURCHASE_DETAILS] 
+INSERT INTO [dm_prl].[F_PURCHASE_DETAILS_hist] 
 (		 
 		 [Purchasing_Document_SK], 
 		 [Client_ID], 
@@ -99,8 +99,8 @@ INSERT INTO [dm_prl].[F_PURCHASE_DETAILS]
 	 ,st.[Planned_Delivery_Time_in_Days]
 	 ,pd.[Stock_Transport_Order_Rejection_Reasons] -- ZZ_STO_REJRES
 	 ,pd.Price_Determination_DT -- PRDAT
-	 ,'2024-04-28'				 AS [ETL_Reference_DT]							
-	 ,-9999					 AS [ETL_Batch_ID]
+	 ,'2022-12-31'				 AS [ETL_Reference_DT]							
+	 ,-3999					 AS [ETL_Batch_ID]
  FROM [dbo].[PURCHASE_HEADER] ph
 
  inner join [temp].[F_PURCHASES_DET_LOG] delta -- Inner join to keep purchase documents included in the current batch
@@ -116,6 +116,6 @@ INSERT INTO [dm_prl].[F_PURCHASE_DETAILS]
  left join [dbo].PLANT pla
  on pla.Plant_SK=pd.Plant_SK
 
- where  ph.ETL_Batch_ID = -9999 
- and pd.ETL_Batch_ID = -9999     
-
+ where  ph.ETL_Batch_ID = -3999 
+ and pd.ETL_Batch_ID = -3999     
+ 
