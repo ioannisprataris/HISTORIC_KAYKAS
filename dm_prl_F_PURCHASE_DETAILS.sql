@@ -1,3 +1,4 @@
+truncate table [dm_prl].[F_PURCHASE_DETAILS_hist] 
 
 DROP TABLE IF EXISTS [temp].[F_PURCHASES_DET_LOG];
 
