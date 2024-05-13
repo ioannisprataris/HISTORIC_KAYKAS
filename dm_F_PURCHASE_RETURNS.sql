@@ -1,6 +1,6 @@
 
 	MERGE [dm].[F_PURCHASE_RETURNS] trg
-		USING [dm_prl].[F_PURCHASE_RETURNS] src
+		USING [dm_prl].[F_PURCHASE_RETURNS_hist] src
 		 ON [src].[Material_Document_SK]								= [trg].[Material_Document_SK]
 		 And [src].[Material_Document_Item]							= [trg].[Material_Document_Item]
 		 and [src].[Material_Document_Year]							= [trg].[Material_Document_Year]
@@ -66,5 +66,4 @@ WHEN MATCHED THEN
          ,src.[ETL_Reference_DT]
 		 ,src.[ETL_Batch_ID]
 	);
-
 
