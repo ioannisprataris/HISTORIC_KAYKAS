@@ -1,5 +1,5 @@
 
-TRUNCATE TABLE [dm_prl].[F_PURCHASES_CREDIT_NOTES];
+TRUNCATE TABLE [dm_prl].[F_PURCHASES_CREDIT_NOTES_hist];
 
 
 
@@ -23,7 +23,7 @@ on pla.Plant_SK=accd.Plant_SK
 Where Material_SK is not null 
 and fin.Finance_ID >= '2900000000' 
 and fin.Finance_ID <= '2999999999'
-and accd.ETL_Batch_ID = -2999 
+and accd.ETL_Batch_ID = -3999 
 
 
 
@@ -48,7 +48,7 @@ on fin.Finance_SK=accd.Accounting_Document_SK
 Where accd.Account_Type='K'
 and fin.Finance_ID >= '2100000000' 
 and fin.Finance_ID <= '2199999999'
-and accd.ETL_Batch_ID = -2999
+and accd.ETL_Batch_ID = -3999
 
 
 
@@ -71,7 +71,7 @@ on acc_21.aac_key=acc_29.aac_key
 
 
 
-INSERT INTO [dm_prl].[F_PURCHASES_CREDIT_NOTES]
+INSERT INTO [dm_prl].[F_PURCHASES_CREDIT_NOTES_hist]
 (		 
 
  [Company_SK]
@@ -104,6 +104,6 @@ SELECT
 	 ,src.[Vendor_SK]
 	 ,isnull(src.[29_Document_SK],-1)
 	 ,isnull(src.[29_Accounting_Document_Line_ID],-1)
-	 ,'2023-12-31'			 AS [ETL_Reference_DT],				
-	 -2999				 AS [ETL_Batch_ID]
+	 ,'2022-12-31'			 AS [ETL_Reference_DT],				
+	 -3999				 AS [ETL_Batch_ID]
 FROM #src src;
