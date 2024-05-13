@@ -1,6 +1,6 @@
 
 	MERGE [dm].[F_PURCHASES_CREDIT_NOTES] trg
-		USING [dm_prl].[F_PURCHASES_CREDIT_NOTES] src
+		USING [dm_prl].[F_PURCHASES_CREDIT_NOTES_hist] src
 		 ON [src].[Company_SK]								= [trg].[Company_SK]
 		 And [src].[21_Document_SK]							= [trg].[21_Document_SK]		
 		 And [src].[Fiscal_Year]								= [trg].[Fiscal_Year]
