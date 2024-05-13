@@ -1,18 +1,25 @@
 
+
+
 TRUNCATE TABLE [dm_prl].[F_PURCHASES_hist];
 
 DROP TABLE IF EXISTS [temp].[F_PURCHASES_DET_LOG];
 
 Create table [temp].[F_PURCHASES_DET_LOG] ([Purchasing_Document_SK] int not null primary key)
 
+----------------------------------------------------------------------
+-- Track current's batch loaded [Purchasing_Document_SK] for incremental load
+----------------------------------------------------------------------
 
 Insert into [temp].[F_PURCHASES_DET_LOG] ([Purchasing_Document_SK])
 
-Select distinct [Purchasing_Document_SK] from [dbo].[PURCHASE_HISTORY] where ETL_Batch_ID = -2999 
+Select distinct [Purchasing_Document_SK] from [dbo].[PURCHASE_HISTORY] where ETL_Batch_ID = -3999
 
+-- =================================================================================================
+-- Step 1: Data manipulation
+-- =================================================================================================
 
-
-
+;with  Purchase_stage as (
 
 SELECT 
 	  phist.[Purchasing_Document_SK] -- key for EBELN
@@ -48,27 +55,28 @@ SELECT
 	 ,phist.[Entry_TM] -- CPUTM
 	 ,phist.[Inventory_Management_Movement_Type_ID] -- BWART
 	 ,ph.Vendor_SK
-	 into #Purchase_stage
+
  FROM [dbo].[PURCHASE_HISTORY]								as phist
+ 
  inner join [temp].[F_PURCHASES_DET_LOG] delta -- Inner join to keep purchase documents included in the current batch
  on delta.Purchasing_Document_SK=phist.Purchasing_Document_SK
+
  inner join	dbo.PLANT												as P 
  on P.Plant_SK=phist.Plant_SK
+
  LEFT JOIN [dbo].[VALUATION_AREA]									as va 
  ON P.[Valuation_Area_SK] = va.[Valuation_SK]
+
  left join [dbo].[PURCHASE_HEADER] ph
  on ph.Purchasing_Document_SK=phist.[Purchasing_Document_SK]
+
  where	(phist.[Purchase_Order_History_Transaction_Event_Type_ID]='2' 
  or	phist.[Purchase_Order_History_Transaction_Event_Type_ID]='3')
- and [Material_Document_ID] not like '54%' 
- and phist.ETL_Batch_ID = -3999 
+ and [Material_Document_ID] not like '54%' -- ejairoyntai oi eggrafes ekkauarishs
+ and phist.ETL_Batch_ID = -3999
+)
 
-
-
-
-
-
-
+, Accounting_info as (
 
 Select distinct	accd.[Company_SK],
 		accd.[Accounting_Document_SK],
@@ -76,28 +84,30 @@ Select distinct	accd.[Company_SK],
 		accd.[Vendor_SK],
 		acch.[Reference_Key],
 		fin.Finance_ID
-	 into #Accounting_info
+	 
 from [dbo].[ACCOUNTING_DOC_DETAIL] accd
 
 inner join [dbo].[ACCOUNTING_DOC_HEADER] acch
 on accd.Accounting_Document_SK=acch.Accounting_Document_SK
 and accd.Company_SK=acch.Company_SK
 and accd.Fiscal_Year=acch.Fiscal_Year
+
 inner join [sgk].[FINANCE] fin
 on fin.Finance_SK=accd.Accounting_Document_SK
-inner join #Purchase_stage delta -- keep logistic entries only for the purchases that where loaded in the current batch
+
+inner join Purchase_stage delta -- keep logistic entries only for the purchases that where loaded in the current batch
 on delta.ReferenceKey=acch.[Reference_Key]
+
 Where accd.Account_Type='K'
-and fin.Finance_ID >= '0020000000' 
-and fin.Finance_ID <= '0020999999'
- and accd.ETL_Batch_ID = -3999 
+--and fin.Finance_ID >= '0020000000' 
+--and fin.Finance_ID <= '0020999999'
+ and accd.ETL_Batch_ID = -3999
 
 
+) 
 
 
-
-
-
+, src as (
 
 Select	cast(format(pur.[Document_Posting_DT],'yyyyMMdd') as int) PostingDatekey,
 		pur.[Purchasing_Document_SK],
@@ -120,11 +130,12 @@ Select	cast(format(pur.[Document_Posting_DT],'yyyyMMdd') as int) PostingDatekey,
 		cast(format(pur.[Entry_DT],'yyyyMMdd') as int) [EntryDatekey], -- CPUDT
 		pur.[Entry_TM], -- CPUTM
 		pur.[Inventory_Management_Movement_Type_ID] -- BWART
-		into #src
-from #Purchase_stage pur
-left join #Accounting_info acc
+
+from Purchase_stage pur
+left join Accounting_info acc
 on acc.Reference_Key=pur.ReferenceKey
 
+)
 
 
 
@@ -177,6 +188,6 @@ SELECT
 	 src.[EntryDatekey],
 	 src.[Entry_TM],
 	 src.[Inventory_Management_Movement_Type_ID],
-	 '2022-12-31'				 AS [ETL_Reference_DT],						
+	 '2022-12-31'				 AS [ETL_Reference_DT],								
 	 -3999					 AS [ETL_Batch_ID]
-FROM #src src;
+FROM src;
