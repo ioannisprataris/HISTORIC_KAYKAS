@@ -1,4 +1,3 @@
-
 Select 
 	det.[Purchase_Order_SK], -- EBELN FK purchase
 	det.[Purchasing_Document_Item_Number], -- EBELP
@@ -19,7 +18,7 @@ from [dbo].[PRODUCT_POSTINGS_DETAIL] det
 inner join [dbo].[PRODUCT_POSTINGS_HEADER] hea
 on hea.[Material_Document_SK]=det.[Material_Document_SK]
 where [Inventory_Management_Movement_Type] = '161'
-and det.ETL_Batch_ID = -9999 
+and det.ETL_Batch_ID = -3999 
 
 
 
@@ -45,7 +44,7 @@ Select
 	into #mseg_162
 from [dbo].[PRODUCT_POSTINGS_DETAIL]
 where [Inventory_Management_Movement_Type] = '162'
-and ETL_Batch_ID = -9999   
+and ETL_Batch_ID = -3999   
 
 
 
@@ -84,8 +83,8 @@ SELECT
  FROM [dbo].[PURCHASE_INVOICE_DETAIL] det
  inner join [dbo].[PURCHASE_INVOICE_HEADER] Hea
  on hea.[Purchase_Invoice_SK]=det.[Purchase_Invoice_SK]
- and det.ETL_Batch_ID = -9999 
-and hea.ETL_Batch_ID = -9999  
+ and det.ETL_Batch_ID = -3999 
+and hea.ETL_Batch_ID = -3999  
 
 
 
@@ -174,7 +173,7 @@ case when isnull(m162.[Material_Document_SK],'')='' and isnull(inv.[Purchase_Inv
 
 
 
-INSERT INTO [dm_prl].[F_PURCHASE_RETURNS]
+INSERT INTO [dm_prl].[F_PURCHASE_RETURNS_hist]
 (		 
 		 [Purchase_Order_SK] 
 		 ,[Purchasing_Document_Item_Number]
@@ -211,6 +210,6 @@ select	distinct
 		stage.[161_Quantity], -- Posothta epistrofvn
 		stage.[161_Local_Currency_Amount], -- Ajia epistrofvn
 		count(*) over (partition by [161_Material_Document_SK], [161_Material_Document_Item]) Count_CreditNotes,
-		'2024-04-28' AS [ETL_Reference_DT],		  				
-	 -9999			 AS [ETL_Batch_ID]                  
+		'2022-12-31' AS [ETL_Reference_DT],		  				
+	 -3999			 AS [ETL_Batch_ID]                  
 from #stage stage
