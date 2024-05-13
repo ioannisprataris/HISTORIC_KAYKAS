@@ -26,7 +26,7 @@ left join [dbo].PLANT pla
 on pla.Plant_SK=accd.Plant_SK
 where accd.etl_batch_id = -3999
 
-
+--select * from #acc_29_21	
 
 
 Select acc_29_21.[Company_SK],
@@ -49,7 +49,7 @@ from #acc_29_21	AS acc_29_21
 -- Load Preloading table
 -- ========================
 
-INSERT INTO [dm_prl].[F_PURCHASES_CREDIT_NOTES]
+INSERT INTO [dm_prl].[F_PURCHASES_CREDIT_NOTES_hist]
 (		 
 
  [Company_SK]
