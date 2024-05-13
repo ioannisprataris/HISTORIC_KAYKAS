@@ -1,6 +1,6 @@
 
 	MERGE [dm].[F_PURCHASE_RECEIVALS] trg
-		USING [dm_prl].[F_PURCHASE_RECEIVALS] src
+		USING [dm_prl].[F_PURCHASE_RECEIVALS_hist] src
 		 ON [src].[Purchasing_Document_SK]								= [trg].[Purchasing_Document_SK]
 		 And [src].[Purchasing_Document_Item_ID]							= [trg].[Purchasing_Document_Item_ID]		
 		 And [src].[Account_Assignment_Sequential_ID]						= [trg].[Account_Assignment_Sequential_ID]	
