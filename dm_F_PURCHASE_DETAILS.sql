@@ -1,5 +1,5 @@
 MERGE [dm].[F_PURCHASE_DETAILS] trg
-		USING [dm_prl].[F_PURCHASE_DETAILS] src
+		USING [dm_prl].[F_PURCHASE_DETAILS_hist] src
 		 ON [src].[Purchasing_Document_SK]								= [trg].[Purchasing_Document_SK]
 		 And [src].[Purchasing_Document_Item_ID]							= [trg].[Purchasing_Document_Item_ID]		
 
@@ -137,5 +137,4 @@ MERGE [dm].[F_PURCHASE_DETAILS] trg
       ,src.[ETL_Reference_DT]
       ,src.[ETL_Batch_ID]
 	);
-
 
