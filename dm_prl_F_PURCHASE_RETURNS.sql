@@ -1,3 +1,5 @@
+truncate table  [dm_prl].[F_PURCHASE_RETURNS_hist]
+
 Select 
 	det.[Purchase_Order_SK], -- EBELN FK purchase
 	det.[Purchasing_Document_Item_Number], -- EBELP
@@ -50,7 +52,6 @@ and ETL_Batch_ID = -3999
 
 
 SELECT 
-
 	det.[Reference_Material_Document_SK] as [Material_Document_SK_161], -- LFBNR FK
 	det.[Reference_Document_Item_ID] as [Material_Document_Item_161], -- LFPOS
 	det.[Purchase_Invoice_SK], -- BELNR FK
@@ -107,7 +108,6 @@ and hea.ETL_Batch_ID = -3999
 		m161.[Plant_SK] [161_Plant_SK],
 		m161.[Vendor_SK] [161_Vendor_SK],
 		m161.[Posting_DT] [161_Posting_DT],
-
 		m162.[Purchase_Order_SK] [162_Purchase_Order_SK],
 		m162.[Purchasing_Document_Item_Number] [162_Purchasing_Document_Item_Number],
 		--m162.[Material_Document_SK_161],
@@ -123,7 +123,6 @@ and hea.ETL_Batch_ID = -3999
 		m162.[Material_Document_Year] [162_Material_Document_Year],
 		m162.[Plant_SK] [162_Plant_SK], 
 		m162.[Vendor_SK] [162_Vendor_SK],
-
 		isnull(inv.[Purchase_Invoice_SK],-1) [inv_Purchase_Invoice_SK], -- BELNR FK
 		isnull(inv.[Purchase_Invoice_Item_ID],-1) [inv_Purchase_Invoice_Item_ID], -- BUZEI
 		inv.[Fiscal_Year] [inv_Fiscal_Year], -- GJAHR
