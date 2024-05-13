@@ -1,5 +1,5 @@
 
-TRUNCATE TABLE [dm_prl].[F_PURCHASE_RECEIVALS];
+TRUNCATE TABLE [dm_prl].[F_PURCHASE_RECEIVALS_hist];
 
 
 
@@ -20,8 +20,8 @@ Where ph.[Purchasing_Document_Type_ID]<>'ZNE' -- BSART
 and ph.[vendor_sk]<>0 -- LIFNR
 and pd.[Purchasing_Document_Deletion_IND]<>'L' -- LOEKZ
 and pd.[Returns_Item_IND]<>'X' -- RETPO
-and ph.ETL_Batch_ID = -9999 
-and pd.ETL_Batch_ID = -9999 
+and ph.ETL_Batch_ID = -3999 
+and pd.ETL_Batch_ID = -3999 
 group by ph.[Purchasing_Document_SK] -- EBELN
 		,pd.[Purchasing_Document_Item_ID] -- EBELP
 		,pd.[Material_SK] -- MATNR
@@ -50,7 +50,7 @@ SELECT
  FROM [dbo].[PURCHASE_HISTORY]
  where [Purchase_Order_History_Category_ID] = 'E' 
  And [Inventory_Management_Movement_Type_ID] = '101'
- and ETL_Batch_ID = -9999
+ and ETL_Batch_ID = -3999
 
 
 
@@ -115,7 +115,7 @@ from #DaysDelayed
 
 
 
-INSERT INTO [dm_prl].[F_PURCHASE_RECEIVALS]
+INSERT INTO [dm_prl].[F_PURCHASE_RECEIVALS_hist]
 (		 
 		 [Purchasing_Document_SK], 
 		 [Purchasing_Document_Item_ID], 
@@ -145,6 +145,6 @@ SELECT
 	 src.[OrderCharacterization],
 	 src.[DeliveryDt],
 	 src.[CPUDt],
-	 '2024-04-28'				 AS [ETL_Reference_DT],				
-	 -9999					 AS [ETL_Batch_ID]
+	 '2022-12-31'				 AS [ETL_Reference_DT],				
+	 -3999					 AS [ETL_Batch_ID]
 FROM #src src;
