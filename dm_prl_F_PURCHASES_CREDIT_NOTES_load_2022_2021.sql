@@ -20,8 +20,8 @@ inner join [dbo].[ACCOUNTING_DOC_HEADER] acch
 on accd.Accounting_Document_SK=acch.Accounting_Document_SK
 and accd.Company_SK=acch.Company_SK
 and accd.Fiscal_Year=acch.Fiscal_Year
-inner join [sgk].[FINANCE] fin
-on fin.Finance_SK=accd.Accounting_Document_SK
+--inner join [sgk].[FINANCE] fin
+--on fin.Finance_SK=accd.Accounting_Document_SK
 left join [dbo].PLANT pla
 on pla.Plant_SK=accd.Plant_SK
 where accd.etl_batch_id = -3999
